@@ -6,16 +6,22 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.zasa.hashr.databinding.FragmentHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class HomeFragment : Fragment() {
 
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    override fun onResume() {
+        super.onResume()
+        val hashAlgorithms = resources.getStringArray(R.array.hash_algorithms)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_item, hashAlgorithms)
+        binding.actAutoComplete.setAdapter(arrayAdapter)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,15 +30,9 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        val hashAlgorithms = resources.getStringArray(R.array.hash_algorithms)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_item, hashAlgorithms)
-        binding.actAutoComplete.setAdapter(arrayAdapter)
 
         binding.btnGenerate.setOnClickListener {
-            lifecycleScope.launch{
-                applyAnimations()
-                navigateToSuccess()
-            }
+            onGenerateClicked()
         }
         return binding.root
     }
@@ -41,7 +41,19 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.home_menu, menu)
     }
 
-    private suspend fun applyAnimations(){
+    private fun onGenerateClicked(){
+        if (binding.etPlainText.text.isEmpty()){
+            showSnackBar("Field Empty.")
+        }else{
+            lifecycleScope.launch {
+                applyAnimations()
+                navigateToSuccess()
+            }
+        }
+
+    }
+
+    private suspend fun applyAnimations() {
         binding.btnGenerate.isClickable = false
         binding.tvTitle.animate().alpha(0f).duration = 400L
         binding.btnGenerate.animate().alpha(0f).duration = 400L
@@ -66,8 +78,18 @@ class HomeFragment : Fragment() {
         delay(1500L)
     }
 
-    private fun navigateToSuccess(){
+    private fun navigateToSuccess() {
         findNavController().navigate(R.id.action_homeFragment_to_successFragment)
+    }
+
+    private fun showSnackBar(message : String){
+        val snackBar = Snackbar.make(
+            binding.rootLayout,
+            message,
+            Snackbar.LENGTH_SHORT
+        )
+        snackBar.setAction("Okay"){}
+        snackBar.show()
     }
 
     // for avoiding memory leaks set binding to null
