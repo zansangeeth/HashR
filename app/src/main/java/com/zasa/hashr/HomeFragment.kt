@@ -42,6 +42,7 @@ class HomeFragment : Fragment() {
     }
 
     private suspend fun applyAnimations(){
+        binding.btnGenerate.isClickable = false
         binding.tvTitle.animate().alpha(0f).duration = 400L
         binding.btnGenerate.animate().alpha(0f).duration = 400L
         binding.tilHash.animate()
