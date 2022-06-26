@@ -70,8 +70,8 @@ class HomeFragment : Fragment() {
     }
 
     // for avoiding memory leaks set binding to null
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }
