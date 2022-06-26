@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zasa.hashr.databinding.FragmentHomeBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -25,7 +28,9 @@ class HomeFragment : Fragment() {
         binding.actAutoComplete.setAdapter(arrayAdapter)
 
         binding.btnGenerate.setOnClickListener {
-            applyAnimations()
+            lifecycleScope.launch{
+                applyAnimations()
+            }
         }
         return binding.root
     }
@@ -34,8 +39,23 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.home_menu, menu)
     }
 
-    private fun applyAnimations(){
+    private suspend fun applyAnimations(){
         binding.tvTitle.animate().alpha(0f).duration = 400L
+        binding.btnGenerate.animate().alpha(0f).duration = 400L
+        binding.tilHash.animate()
+            .alpha(0f)
+            .translationXBy(1200f)
+            .duration = 400L
+        binding.etPlainText.animate()
+            .alpha(0f)
+            .translationXBy(-1200f)
+            .duration = 400L
+
+        delay(300)
+        binding.vSuccess.animate().alpha(1f).duration = 600L
+        binding.vSuccess.animate().rotationBy(720f).duration = 600L
+        binding.vSuccess.animate().scaleXBy(900f).duration = 800L
+        binding.vSuccess.animate().scaleYBy(900f).duration = 800L
     }
 
     // for avoiding memory leaks set binding to null
