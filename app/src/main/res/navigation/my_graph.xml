@@ -14,7 +14,8 @@
             android:id="@+id/action_homeFragment_to_successFragment"
             app:destination="@id/successFragment"
             app:enterAnim="@anim/from_bottom"
-            app:exitAnim="@anim/to_top" />
+            app:exitAnim="@anim/to_top"
+            app:popEnterAnim="@anim/from_top" />
     </fragment>
     <fragment
         android:id="@+id/successFragment"
