@@ -3,6 +3,7 @@ package com.zasa.hashr
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -58,16 +59,15 @@ class HomeFragment : Fragment() {
         }else{
             lifecycleScope.launch {
                 applyAnimations()
-                getHashData()
-                navigateToSuccess()
+                navigateToSuccess(getHashData())
             }
         }
     }
 
     private fun getHashData(): String{
         val algorithm = binding.actAutoComplete.text.toString()
-        val plainText = binding.etPlainText.text.toString()
-        return homeViewModel.getHash(plainText, algorithm)
+        val etPlainText = binding.etPlainText.text.toString()
+        return homeViewModel.getHash(etPlainText, algorithm)
     }
 
 
@@ -96,9 +96,9 @@ class HomeFragment : Fragment() {
         delay(1500L)
     }
 
-    private fun navigateToSuccess() {
-//        val directions = HomeFragmentDe
-        findNavController().navigate(R.id.action_homeFragment_to_successFragment)
+    private fun navigateToSuccess(hash : String) {
+        val directions = HomeFragmentDirections.actionHomeFragmentToSuccessFragment(hash)
+        findNavController().navigate(directions)
     }
 
     private fun showSnackBar(message : String){
@@ -108,6 +108,7 @@ class HomeFragment : Fragment() {
             Snackbar.LENGTH_SHORT
         )
         snackBar.setAction("Okay"){}
+        snackBar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
         snackBar.show()
     }
 
