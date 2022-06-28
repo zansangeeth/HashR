@@ -1,5 +1,7 @@
 # HashR
 
+ <a href="https://play.google.com/store/apps/details?id=com.zasa.hashr"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
+ 
 Sangeeth Amirthanathan
 
 **HashR** is the encoded string generater using different algorithms 
